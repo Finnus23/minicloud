@@ -1,6 +1,7 @@
 #include <mysql/mysql.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <mupdf/fitz.h>
 
 int main(){
 
@@ -24,6 +25,22 @@ int main(){
     }
 
     printf("NICE");
+
+    fz_context *ctx = fz_new_context(NULL, NULL, FZ_STORE_DEFAULT);
+    if (!ctx) {
+        fprintf(stderr, "Failed to create context\n");
+        return 1;
+    }
+
+    fz_document *doc = fz_open_document(ctx, "test.pdf");
+    if (!doc) {
+        fprintf(stderr, "Failed to open document\n");
+        fz_drop_context(ctx);
+        return 1;
+    }
+
+    printf("NIIIIICE");
+
     mysql_close(connection);
     
 
